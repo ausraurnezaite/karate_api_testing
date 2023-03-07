@@ -1,23 +1,8 @@
-Feature: Create user with random email using POST
+Feature: Create user with data from json and random email using POST
 
   Background:
     * url baseUrl
-
-    * def randomEmail =
-    """
-    function () {
-      return Date.now() + "@email.com";
-    }
-    """
-
-    * def requestPayload =
-    """
-     {
-            "name": "zuikis",
-            "gender": "male",
-            "status": "active"
-     }
-    """
+    * def requestPayload = read('../../resources/user.json')
     * requestPayload.email = randomEmail()
     * print requestPayload
 
@@ -29,4 +14,4 @@ Feature: Create user with random email using POST
     When  method POST
     Then status 201
     And match $.data.id == '#present'
-    And match $.data.name == userName
+    And match $.data.name == requestPayload.name
